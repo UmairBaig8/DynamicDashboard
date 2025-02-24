@@ -9,8 +9,13 @@ from collections import defaultdict
 def init_connection():
     return MongoClient(st.secrets.mongo.uri)
 
-client = init_connection()
+#client = init_connection()
 with st.sidebar.expander("➕ Database Selection:"):
+    mongo_uri = st.text_input("Mongo URI")
+    if mongo_uri:
+        client = MongoClient(mongo_uri)
+    else:
+        client = MongoClient(st.secrets.mongo.uri)
     # Database/Collection selection
     db_name = st.selectbox("Select Database", client.list_database_names())
     db = client[db_name]
